@@ -12,9 +12,9 @@
 #endif
 
 #if UTF8_CONVERT
-	const FIRMWARE_VERSION="{tr610.5.02.00pl}"
+	const FIRMWARE_VERSION="{tr610.5.02.01pl}"
 #else
-	const FIRMWARE_VERSION="{tr610.5.02.00}"
+	const FIRMWARE_VERSION="{tr610.5.02.01}"
 #endif
 const RELAY_IO1 = 47
 const RELAY_IO2 = 48

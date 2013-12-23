@@ -61,7 +61,6 @@ declare sub html_tbl_print_error
 declare sub html_table_time_mod(html_tbl_name as string(HTML_TBL_NAME_LEN))
 declare sub html_table_clear(html_tbl_name as string(HTML_TBL_NAME_LEN))
 declare sub html_tbl_print_datepicker
-declare sub html_table_download(dl_mode as download_mode)
 declare function html_tbl_upload as byte
 declare sub html_tables_record_delete(html_tbl_name as string(HTML_TBL_NAME_LEN))
 

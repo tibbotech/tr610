@@ -1071,7 +1071,7 @@ public sub device_log_download()
 			b=instr(1,s_id,chr(0),1)
 			if b>0 then s_id=left(s_id,b-1)
 			s = s+s_id+","
-			select case asc(mid(stemp2,11+ID_LEN,1))
+			select case asc(mid(stemp2,10,1))
 			case 0: s = s+"CLOCK IN,"
 			case 1: s = s+"CLOCK OUT,"
 			case 2: s = s+"TEMP IN,"

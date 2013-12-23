@@ -2,8 +2,8 @@
 version=3.07.62
 platform=EM1000
 src_lib_ver=2_00_01(For TR610 the original 2_00)
-name=tr610_5_02_00
-output=tr610_5_02_00.tpc
+name=tr610
+output=tr610.tpc
 debug=on
 defines=/dLCD_TYPE=SAMSUNG_S6B0108 /dOBJECT_LCD=LCD_ENABLED /dOBJECT_FD=FD_ENABLED /dOBJECT_KP=KP_ENABLED /dOBJECT_WLN=WLN_ENABLED
 transport=udp_winpcap
@@ -14,7 +14,7 @@ address=0.24.77.80.30.167
 [address2]
 platform=EM1000
 transport=udp_winpcap
-address=0.0.0.0.46.82
+address=0.24.77.80.30.167
 [file1]
 path=main.tbs
 type=basic
