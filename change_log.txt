@@ -1,0 +1,22 @@
+==== 3_04_12
+DONE	fix the bug that setting date in menu could also effect time, convert time to local after read from RTC
+
+==== 3_04_13
+DONE	fix the bug that time for log event, send to AggreGate is local time. convert local time to gmt in callback_agg_tbl_fld_mod_sg()
+
+==== 3_04_14
+DONE	add daylight saving time option for td_local_to_gmt() and td_gmt_to_local
+DONE	add new setting DS for Daylight saving time.
+
+==== 3_04_15
+DONE	fix the bug in td_gmt_to_local() in time.tbs which calculate the DST in error.
+
+==== 3_04_16
+DONE	add a new setting IL allows the user to adjust the id length, this is a fix the bug caused when we expend the id length to 12 bytes, and will conflict with exsiting database
+
+==== 3_04_17
+DONE	add a new setting IS allows the user to adjust the starting position of id.
+==== 3_04_18 / 5_00_00
+DONE	control over relay
+DONE	alarm clock
+==== 5_00_02

@@ -1,0 +1,12 @@
+HTML		Field		Field			Input	Query	Table	HTML
+ID			Name		String									Data
+
+>>TIME	Time		Time			Y		=		Y		W,T
+>>SUN		Sun		Sunday			Y		=		Y		B,L,0-No;1-Yes;
+>>MON		Mon		Monday			Y		=		Y		B,L,0-No;1-Yes;
+>>TUE		Tue		Tuesday			Y		=		Y		B,L,0-No;1-Yes;
+>>WED		Wed		Wednesday			Y		=		Y		B,L,0-No;1-Yes;
+>>THU		Thu		Thursday			Y		=		Y		B,L,0-No;1-Yes;
+>>FRI		Fri		Friday			Y		=		Y		B,L,0-No;1-Yes;
+>>SAT		Sat		Saturday			Y		=		Y		B,L,0-No;1-Yes;
+<END>
