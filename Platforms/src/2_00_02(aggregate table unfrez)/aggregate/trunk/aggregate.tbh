@@ -23,7 +23,7 @@
 #endif
 
 #ifndef AGG_MAX_CONTEXT_NAME_LEN 
-	#define AGG_MAX_CONTEXT_NAME_LEN 4		
+	#define AGG_MAX_CONTEXT_NAME_LEN 0		
 #endif
 
 #ifndef AGG_MAX_ITEM_NAME_LEN 

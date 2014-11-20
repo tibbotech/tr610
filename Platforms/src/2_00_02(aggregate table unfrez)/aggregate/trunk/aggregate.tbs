@@ -99,6 +99,8 @@ dim agg_event_item_index as byte
 dim agg_cur_event_rec_num as word
 dim agg_link_state as en_agg_link_states
 dim agg_first_conn_failed as no_yes
+dim agg_sending_records as no_yes
+dim sending_rec_num as word
 
 '------------------------------------------------------------------------------
 declare function agg_get_descriptor_field(line_end_pos as word, byref field_start_pos as word) as string
@@ -223,6 +225,7 @@ l1:
 	agg_rx=""
 	agg_selected_tbl_info=""
 	agg_first_conn_failed=NO
+	agg_sending_records=NO
 	agg_start=agg_connect()
 	i=sys.timercount
 	while sock.statesimple<>PL_SSTS_EST and sys.timercount-i<3 and sys.timercount>=i
@@ -561,6 +564,10 @@ public sub agg_proc_timer()
 		#endif
 		#if AGG_TABLE_CONTROL
 			agg_check_stored_events()
+			
+			if agg_sending_records=YES then
+				agg_send_all_record(agg_selected_tbl_info) 
+			end if
 		#endif
 	end select	
 end sub
@@ -717,7 +724,7 @@ rx_read:
 		
 		if pos1>0 then
 			select case agg_cmd.item_name
-			case "date":		'set date				
+			case "date","datex":		'set date				
 				stemp2=agg_element_get("11",stemp2,chr(AGG_ELEMENT_START),chr(AGG_ELEMENT_END))
 				stemp2=mid(stemp2,2,len(stemp2)-2)
 				agg_systime_sg(stemp2,EN_AGG_SET)
@@ -1222,7 +1229,7 @@ sub agg_get_items()
 		s=chr(AGG_COMMAND_START)+"R"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+agg_cmd.id+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+"A"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+chr(AGG_ELEMENT_START)+"R"+chr(AGG_ELEMENT_NAME_VALUE_SEPARATOR)+chr(AGG_ELEMENT_START)+s+chr(AGG_ELEMENT_END)+chr(AGG_ELEMENT_END)+chr(AGG_COMMAND_END)
 		agg_data_send(s)
 	
-	case "date":
+	case "date","datex":
 		agg_systime_sg(s,EN_AGG_GET)
 		s=chr(AGG_COMMAND_START)+"R"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+agg_cmd.id+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+"A"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+chr(AGG_ELEMENT_START)+"R"+chr(AGG_ELEMENT_NAME_VALUE_SEPARATOR)+chr(AGG_ELEMENT_START)+s+chr(AGG_ELEMENT_END)+chr(AGG_ELEMENT_END)+chr(AGG_COMMAND_END)
 		agg_data_send(s)
@@ -1233,7 +1240,6 @@ sub agg_get_items()
 				#if AGG_TABLE_CONTROL
 					if agg_items(i).p1="T" then
 						if agg_send_all_record(agg_cmd.item_name)<>OK then goto not_found
-						agg_data_send(chr(AGG_COMMAND_END))
 						exit sub				
 					end if
 				#endif
@@ -1424,7 +1430,6 @@ function agg_send_all_record(byref tbl_name as string) as ok_ng
 	dim tbl_temp as tbl_type
 	dim fld_temp as tbl_field_type
 	dim j, dt_len as byte
-	dim rec_num as word
 	dim s as string
 	dim num_of_field as byte
 	dim tbl_result as en_tbl_status_codes
@@ -1434,15 +1439,22 @@ function agg_send_all_record(byref tbl_name as string) as ok_ng
 	if tbl_result<>EN_TBL_STATUS_OK then 
 		callback_agg_error(EN_AGG_STATUS_TABLE_ERROR,tbl_name)
 		callback_agg_tbl_error(tbl_name,tbl_result)
-		exit function
+		goto finish
 	end if
-	rec_num=0
 	
-	agg_data_send(chr(AGG_COMMAND_START)+"R"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+agg_cmd.id+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+"A"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR))
-	do
-		if tbl_record_read_active(rec_num)<>EN_TBL_STATUS_OK then exit do
-		if tbl_field_sg("UID",s,EN_TBL_GET)<>EN_TBL_STATUS_OK then exit do
-		
+	if agg_sending_records=NO then
+		sending_rec_num=0
+		agg_sending_records=YES
+		agg_selected_tbl_info=tbl_name
+		agg_data_send(chr(AGG_COMMAND_START)+"R"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+agg_cmd.id+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)+"A"+chr(AGG_COMMAND_PARAMETERS_SEPARATOR)) 
+	end if
+	
+	
+	if tbl_record_read_active(sending_rec_num)=EN_TBL_STATUS_OK then
+		if tbl_field_sg("UID",s,EN_TBL_GET)<>EN_TBL_STATUS_OK then
+			agg_send_all_record=NG
+			goto finish
+		end if
 		s=chr(AGG_ELEMENT_START)+"R"+chr(AGG_ELEMENT_NAME_VALUE_SEPARATOR)+chr(AGG_ELEMENT_START)+"I"+chr(AGG_ELEMENT_NAME_VALUE_SEPARATOR)+s+chr(AGG_ELEMENT_END)
 		agg_data_send(s)
 		num_of_field=tbl_get_num_fields(tbl_name)
@@ -1469,10 +1481,14 @@ function agg_send_all_record(byref tbl_name as string) as ok_ng
 
 		s=chr(AGG_ELEMENT_END)
 		agg_data_send(s)
-		rec_num=rec_num+1
-	loop while true
-	agg_data_send(chr(AGG_COMMAND_END))
-	agg_send_all_record=OK
+		sending_rec_num=sending_rec_num+1
+		agg_send_all_record=OK
+	else
+		agg_send_all_record=OK
+finish:
+		agg_sending_records=NO
+		agg_data_send(chr(AGG_COMMAND_END))
+	end if
 end function
 
 '------------------------------------------------------------------------------
