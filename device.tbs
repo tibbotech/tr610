@@ -1395,7 +1395,7 @@ public sub execute_auto_button_action()
 		if auto_event_timer>0 then exit sub
 	end if
 	
-	rtc.getdata(0,min_count,0)
+	rtc.getdata(day_count,min_count,0)
 	td_gmt_to_local(day_count, min_count,param_tz,param_ds)
 	
 	event_action=255
@@ -1410,6 +1410,7 @@ public sub execute_auto_button_action()
 	last_b3=255 
 	last_b4=255
 	
+	'go through schedule and look through all action for switching, or rly control, find the last one on schedule for each action. the last one will be used if no action was matched on the schdule (roll over rule)
 	for i=0 to auto_button_item-1
 		select case auto_button_action(i)
 		case 0,1,2,3:

@@ -1,10 +1,10 @@
 ==CR	14000	L	0
 >>type	B	0	3	0
->>id	S	1	12	xxxxxxxx
+>>id	S	1	14	xxxxxxxx
 >>date	T	6	0	20000101010101001
 ==TBL_WL	255	T	1
->>ID	S	1	12	xxxxxxxx
->>NAME	S	0	40	^
+>>ID	S	1	14	xxxxxxxx
+>>NAME	S	0	38	^
 ==AU_BUT	20	T	0
 >>time	T	1	0	0000
 >>act	B	0	15	0

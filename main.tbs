@@ -17,8 +17,8 @@ public dim param_b2 as byte
 public dim param_b3 as byte
 public dim param_b4 as byte
 public dim param_ab as byte
-public dim param_il as byte
-public dim param_is as byte
+public dim param_il as byte		'id length
+public dim param_is as byte		'id starting pos
 public dim param_r1 as byte
 public dim param_r2 as byte
 public dim r1_timer, r2_timer as byte
@@ -117,6 +117,7 @@ sub on_sys_timer()
 		if login_mode=CMD_MODE_NONE and param_ar=1 then
 			agg_start(PL_SOCK_INTERFACE_NET,param_on,param_dn,stg_get("PW",0),stg_get("DI",0),stg_get("DP",0),param_ct,yes)
 		end if
+		'if the current button is disabled, move to next aviailable button
 		if force_refresh_screen=YES then
 			print_bar = YES	
 			ui_clock_force_print = YES
@@ -171,7 +172,7 @@ end sub
 sub on_sock_data_arrival()
 	dhcp_proc_data()
 	agg_proc_data()	
-	net_cmd_proc(sock.getdata(255),CMD_MODE_UDP,"U"+sock.remoteip,sock.bcast,error_mode)
+	net_cmd_proc(CMD_MODE_UDP,"U"+sock.remoteip,sock.bcast,error_mode)
 
 end sub
 
@@ -197,18 +198,17 @@ end sub
 sub on_ser_data_arrival()
 	dim Pos1,Pos2 as byte
 	dim s as string
-	s = ser.getdata(255)
 	select case ser.num
 	case READER_PORT_NUM,READER_PORT_NUM+1:
 		if reader_blocked=YES then
 			ser.rxclear()
 			exit sub
 		end if
-		id_buffer = id_buffer + s	
-		Pos1 = instr(1,id_buffer,chr(STX),1)	
-		Pos2 = instr(1,id_buffer,chr(CR),1)
+		s = ser.peekdata(255)
+		Pos1 = instr(1,s,chr(STX),1)	
+		Pos2 = instr(1,s,chr(CR),1)
 		if Pos2 > 0 and Pos1 > 0 and Pos2 > Pos1 then 
-			id_buffer = mid(id_buffer,pos1+1,pos2-pos1-1)
+			id_buffer = mid(s,pos1+1,pos2-pos1-1)
 			select case on_reader_event_dest
 			case ON_READER_EVENT_DEST_INIT
 				kp.enabled = NO
@@ -225,10 +225,17 @@ sub on_ser_data_arrival()
 				device_card_read(id_buffer)
 			end select
 			id_buffer = ""
+			ser.rxclear()
+		else
+			if ser.rxlen>128 then
+				ser.rxclear()
+			end if
 		end if
 		if len(id_buffer) > ID_LEN+4 then
 			id_buffer = ""
 		end if
+	case else
+		ser.rxclear()
 	end select
 end sub
 

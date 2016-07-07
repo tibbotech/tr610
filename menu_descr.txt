@@ -44,7 +44,7 @@
 >>	0	2	N	Set time				S,I,TT,  :  ,D,4,N	^
 >>	0	1	F	White list		^
 >>	0	2	N	Enable/Disable			S,L,WL,0-Disabled;1-Enabled;	^
->>	0	2	N	Edit W/L				S,T,TBL_WL,I,ID,,B,12,N,I,NAME,,B,25,N	^
+>>	0	2	N	Edit W/L				S,T,TBL_WL,I,ID,,B,14,N,I,NAME,,B,25,N	^
 >>	0	2	N	Clear W/L				C,D	^
 >>	1	0	N	Initialize				C,I	^
 >>	0	0	N	Reboot					C,E	^

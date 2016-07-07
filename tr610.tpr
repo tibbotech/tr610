@@ -6,7 +6,7 @@ name=tr610
 output=tr610.tpc
 debug=off
 defines=/dLCD_TYPE=SAMSUNG_S6B0108 /dOBJECT_LCD=LCD_ENABLED /dOBJECT_FD=FD_ENABLED /dOBJECT_KP=KP_ENABLED /dOBJECT_WLN=WLN_ENABLED
-transport=udp_winpcap
+transport=udp_broadcast
 [address1]
 platform=EM1000W
 transport=udp_winpcap
@@ -14,6 +14,10 @@ address=0.24.77.80.30.167
 [address2]
 platform=EM1000
 transport=udp_winpcap
+address=0.24.77.80.30.167
+[address3]
+platform=EM1000
+transport=udp_broadcast
 address=0.24.77.80.30.167
 [file1]
 path=main.tbs
@@ -41,7 +45,7 @@ path=dhcp\trunk\dhcp.tbh
 type=header
 format=
 condition=
-locked=yes
+locked=no
 location=commonlib
 [file5]
 path=dhcp\trunk\dhcp.tbs

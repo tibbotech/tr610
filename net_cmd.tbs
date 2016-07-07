@@ -60,7 +60,7 @@ end sub
 
 
 '-------------------------------------------------------------
-public sub net_cmd_proc(byref s as string(MAX_NET_CMD_LEN), cmd_mode as cmd_modes, byref cmd_data as string(32), cmd_bcast as no_yes, error_mode as no_yes)
+public sub net_cmd_proc(cmd_mode as cmd_modes, byref cmd_data as string(32), cmd_bcast as no_yes, error_mode as no_yes)
 	dim ss as string (1)
 	dim stg_data as string(32)
 	dim x,pos,pos2,f as byte
@@ -76,9 +76,10 @@ public sub net_cmd_proc(byref s as string(MAX_NET_CMD_LEN), cmd_mode as cmd_mode
 	dim cmd_sock as byte
 	dim i as word
 	dim ser_num as string(8)
+	dim s as string(MAX_NET_CMD_LEN)
 	
 	if sock.num<>udp_sock then exit sub
-	
+	s=sock.getdata(255)
 	cmd_sock=sock.num	'memorize on which socket we have received this command
 	ip_change_needed=NO
 	reply_str="" 		'will prepare our reply here
@@ -248,7 +249,9 @@ public sub net_cmd_proc(byref s as string(MAX_NET_CMD_LEN), cmd_mode as cmd_mode
 
 
 	case "O": 'logout -------------------------------------------
-		if cmd_src_valid=NO then goto reply_denied
+		if login_mode<>CMD_MODE_NONE and cmd_src_valid=NO then 
+			goto reply_denied
+		end if
 		logout()
 		goto reply_ok
 		

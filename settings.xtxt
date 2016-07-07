@@ -13,7 +13,7 @@
 >>PW	E	S	1	0	6	A	^
 >>TS	E	D	1	4	4	A	219.80.248.168
 >>TF	E	B	1	0	1	A	0
->>MC	E	S	1	0	12	A	^
+>>MC	E	S	1	0	14	A	^
 >>WL	E	B	1	0	1	A	0
 >>CT	E	B	1	0	99	A	5
 >>TZ	E	B	1	0	34	A	0
@@ -24,8 +24,8 @@
 >>MM	E	B	1	0	1	A	0
 >>AB	E	B	1	0	1	A	0
 >>DS	E	B	1	0	1	A	0
->>IL	E	B	1	1	12	A	8
->>IS	E	B	1	1	12	A	1
+>>IL	E	B	1	1	14	A	8
+>>IS	E	B	1	1	14	A	1
 >>R1	E	B	1	0	2	A	1
 >>R2	E	B	1	0	2	A	1	
 >>T1	E	B	1	0	30	A	2
