@@ -4,7 +4,7 @@ platform=EM1000
 src_lib_ver=2_00_01(For TR610 the original 2_00)
 name=tr610
 output=tr610.tpc
-debug=off
+debug=on
 defines=/dLCD_TYPE=SAMSUNG_S6B0108 /dOBJECT_LCD=LCD_ENABLED /dOBJECT_FD=FD_ENABLED /dOBJECT_KP=KP_ENABLED /dOBJECT_WLN=WLN_ENABLED
 transport=udp_broadcast
 [address1]
@@ -45,7 +45,7 @@ path=dhcp\trunk\dhcp.tbh
 type=header
 format=
 condition=
-locked=no
+locked=yes
 location=commonlib
 [file5]
 path=dhcp\trunk\dhcp.tbs

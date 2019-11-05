@@ -484,6 +484,7 @@ decode_packet:
 	end if	
 
 	dhcp_obtained_lease_time(dhcp_i)=4294967295 'first, assume max lease time
+	
 	t1_found=NO
 
 	'Look through options and extract the ones we need. Only one option-

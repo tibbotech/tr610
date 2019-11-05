@@ -147,10 +147,20 @@ end sub
 
 '------------------------------------------------------------------------------
 sub callback_dhcp_pre_buffrq(required_buff_pages as byte)
+	dim f as byte
+	'TELNET/HTTP
+	for f=SOCK_HTTP to SOCK_HTTP+NUM_HTTP_SOCKETS-1
+		sock.num=f
+		sock.txbuffrq(0)
+		sock.varbuffrq(0)
+	next f
+	sys.buffalloc
+	
 end sub
 
 '------------------------------------------------------------------------------
 sub callback_dhcp_buff_released()
+	html_init()
 end sub
 
 '------------------------------------------------------------------------------
